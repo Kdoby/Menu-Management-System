@@ -1,0 +1,125 @@
+/* 카드 높이를 맞추고 가격을 바닥에 붙여, 한 줄의 가격들이 같은 선 위에 놓이게 한다. */
+.card {
+  height: 100%;
+  padding: var(--spacing-8);
+  display: flex;
+  flex-direction: column;
+  border: var(--app-edge);
+  border-radius: var(--radius-16);
+  background: var(--semantic-background-normal-normal);
+}
+
+/* 사진 자리. 그림을 오른쪽 아래로 걸쳐 판 밖으로 조금 잘리게 둔다. */
+.art {
+  position: relative;
+  height: 112px;
+  padding: var(--spacing-12) var(--spacing-14);
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--spacing-8);
+  overflow: hidden;
+  border-radius: var(--radius-10);
+  background: var(--tone-tint, var(--semantic-fill-alternative));
+}
+
+.category {
+  position: relative;
+  color: var(--semantic-label-neutral);
+}
+
+.glyph {
+  position: absolute;
+  right: calc(var(--spacing-12) * -1);
+  bottom: calc(var(--spacing-20) * -1);
+  color: var(--tone-ink, var(--semantic-label-assistive));
+  transform: rotate(-8deg);
+  transition: transform 0.25s ease;
+}
+
+/* 색 판 가운데에 찍는다. 도장의 기울기는 SoldOutStamp 가 정한다. */
+.stamp {
+  position: absolute;
+  top: calc(50% - 30px);
+  left: calc(50% - 30px);
+}
+
+/* 마우스를 올리면 그림이 바로 서며 조금 커진다. */
+.card:hover .glyph {
+  transform: rotate(0deg) scale(1.08);
+}
+
+.body {
+  flex-grow: 1;
+  padding: var(--spacing-14) var(--spacing-8) var(--spacing-8);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+}
+
+.name {
+  margin: 0;
+  color: var(--semantic-label-strong);
+  overflow-wrap: anywhere;
+}
+
+.price {
+  margin-top: auto;
+  padding-top: var(--spacing-12);
+  color: var(--semantic-label-strong);
+}
+
+.soldOut .name {
+  color: var(--semantic-label-alternative);
+}
+
+.soldOut .price {
+  color: var(--semantic-label-assistive);
+  text-decoration: line-through;
+  text-decoration-thickness: 2px;
+}
+
+/* 불러오는 동안의 카드. 막대 모양은 공용 스켈레톤에서 가져온다. */
+.boneArt {
+  height: 112px;
+  border-radius: var(--radius-10);
+}
+
+.boneName {
+  width: 64%;
+  height: 24px;
+}
+
+.bonePrice {
+  width: 48%;
+  height: 30px;
+  margin-top: var(--spacing-24);
+}
+
+@media (max-width: 640px) {
+  .card {
+    padding: var(--spacing-6);
+  }
+
+  .art,
+  .boneArt {
+    height: 88px;
+  }
+
+  .glyph {
+    width: 64px;
+    height: 64px;
+    right: calc(var(--spacing-8) * -1);
+    bottom: calc(var(--spacing-10) * -1);
+  }
+
+  .body {
+    padding: var(--spacing-12) var(--spacing-6) var(--spacing-6);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .glyph {
+    transition: none;
+  }
+}

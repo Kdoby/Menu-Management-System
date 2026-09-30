@@ -1,0 +1,198 @@
+name: Deploy
+on:
+  workflow_dispatch:
+    inputs:
+      increment:
+        description: 'SemVer Increment (prepatch = bump alpha)'
+        required: true
+        default: 'prepatch'
+        type: choice
+        options:
+          - prerelease
+          - prepatch
+          - preminor
+          - premajor
+          - patch
+          - minor
+          - major
+
+env:
+  NODE_AUTH_TOKEN: ${{ secrets.NODE_AUTH_TOKEN }}
+  SERVICE: 'WDS'
+
+jobs:
+  deploy:
+    permissions:
+      packages: write
+      contents: write
+    runs-on: ubuntu-latest
+    steps:
+      - name: Generate GitHub App Token
+        id: app-token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ secrets.BOT_APP_ID }}
+          private-key: ${{ secrets.BOT_APP_PRIVATE_KEY }}
+
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ steps.app-token.outputs.token }}
+
+      - name: Install dependencies
+        uses: ./.github/actions/pnpm-install
+
+      - name: Build packages
+        uses: ./.github/actions/package-build
+        env:
+          MCP_TRACK_CLIENT_ID: ${{ secrets.MCP_TRACK_CLIENT_ID }}
+
+      - name: Get GitHub App user info
+        id: app-user
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+        run: |
+          set -euo pipefail
+          APP_SLUG="${{ steps.app-token.outputs.app-slug }}"
+          USER_ID=$(gh api "/users/${APP_SLUG}[bot]" --jq .id)
+          if [ -z "$USER_ID" ]; then
+            echo "Failed to resolve GitHub App user ID for ${APP_SLUG}[bot]" >&2
+            exit 1
+          fi
+          echo "name=${APP_SLUG}[bot]" >> "$GITHUB_OUTPUT"
+          echo "email=${USER_ID}+${APP_SLUG}[bot]@users.noreply.github.com" >> "$GITHUB_OUTPUT"
+
+      - run: git config user.name "${{ steps.app-user.outputs.name }}"
+      - run: git config user.email "${{ steps.app-user.outputs.email }}"
+      - name: Publish
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+        run: pnpm run lerna-deploy ${{ inputs.increment }} --force-publish --dist-tag ${{ contains(inputs.increment, 'pre') && 'alpha' || 'latest' }} --yes ${{ contains(inputs.increment, 'pre') && '--conventional-prerelease' || '--conventional-commits' }} --registry https://npm.pkg.github.com/ --yes --conventional-commits --create-release=github
+
+      - name: Get published version
+        id: version
+        run: |
+          git pull
+          VERSION=$(node -e "console.log(require('./lerna.json').version)")
+          VERSION_PATH=$(echo $VERSION | sed 's/\.[0-9]*$/.x/')
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "version_path=$VERSION_PATH" >> $GITHUB_OUTPUT
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+      version_path: ${{ steps.version.outputs.version_path }}
+
+  close-milestone:
+    runs-on: ubuntu-latest
+    needs: [deploy]
+    if: ${{ needs.deploy.result == 'success' && !contains(inputs.increment, 'pre') }}
+    permissions:
+      issues: write
+    steps:
+      - name: Close released milestone
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ needs.deploy.outputs.version }}
+        run: |
+          set -euo pipefail
+          # prerelease(4.0.0-alpha.N)는 마일스톤(4.0.0)을 닫지 않는다
+          if [[ -z "$VERSION" || "$VERSION" == *-* ]]; then
+            echo "::notice::stable 버전이 아님($VERSION) — skip"
+            exit 0
+          fi
+          MILESTONE=$(gh api --paginate "repos/${{ github.repository }}/milestones?state=open&per_page=100" \
+            --jq ".[] | select(.title == \"$VERSION\") | \"\(.number) \(.open_issues)\"")
+          if [ -z "$MILESTONE" ]; then
+            echo "::notice::열린 $VERSION 마일스톤 없음 — skip"
+            exit 0
+          fi
+          read -r NUMBER OPEN_ISSUES <<< "$MILESTONE"
+          if [ "$OPEN_ISSUES" -gt 0 ]; then
+            echo "::warning::$VERSION 마일스톤에 열린 이슈/PR ${OPEN_ISSUES}건이 남아 있어 닫지 않음"
+            exit 0
+          fi
+          gh api -X PATCH "repos/${{ github.repository }}/milestones/$NUMBER" -f state=closed --silent
+          echo "::notice::$VERSION 마일스톤(#$NUMBER) 완료 처리"
+
+  deploy-success:
+    runs-on: ubuntu-latest
+    needs: [deploy]
+    if: ${{ needs.deploy.result == 'success' }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Get current versions
+        run: |
+          git pull
+          echo "RELEASE_URL=${{ github.event.repository.html_url }}/releases" >> $GITHUB_ENV
+          RELEASE=$(printf "%s" "$(git describe --tags)")
+          RELEASE="$(echo "$RELEASE" | sed -z 's/\n/\\n/g')"
+          echo "RELEASE=${RELEASE}" >> $GITHUB_ENV
+
+      - name: Post Slack Message - Deploy Success
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.DEPLOY_SLACK_WEBHOOK_URL }}
+        run: |
+          curl -X POST -H 'Content-type: application/json' \
+            --data '{
+              "text": "",
+              "attachments": [
+                {
+                  "color": "00E5BA",
+                  "blocks": [
+                    {
+                      "type": "section",
+                      "text": {
+                        "type": "mrkdwn",
+                        "text": "*${{ env.SERVICE }} ${{ inputs.increment }} 배포 완료*"
+                      }
+                    },
+                    {
+                      "type": "section",
+                      "text": {
+                        "type": "mrkdwn",
+                        "text": "배포된 버전"
+                      }
+                    },
+                    {
+                      "type": "divider"
+                    },
+                    {
+                      "type": "section",
+                      "text": {
+                        "type": "mrkdwn",
+                        "text": "${{ env.RELEASE }}"
+                      },
+                      "accessory": {
+                        "type": "button",
+                        "text": {
+                          "type": "plain_text",
+                          "text": "릴리즈 보러가기"
+                        },
+                        "value": "goto_frontend_design_system_release",
+                        "url": "${{ env.RELEASE_URL }}",
+                        "action_id": "button-action"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }' \
+            "$SLACK_WEBHOOK_URL"
+
+  deploy-docs:
+    uses: ./.github/workflows/docs-deploy.yml
+    secrets: inherit
+    needs: [deploy]
+    if: ${{ needs.deploy.result == 'success' && !contains(inputs.increment, 'pre') && (inputs.increment == 'minor' || inputs.increment == 'major') }}
+    with:
+      server_type: www
+      version_path: ${{ needs.deploy.outputs.version_path || '' }}
+
+  deploy-mcp-server:
+    uses: ./.github/workflows/mcp-deploy.yml
+    secrets: inherit
+    needs: [deploy]
+    if: ${{ needs.deploy.result == 'success' && !contains(inputs.increment, 'pre') && (inputs.increment == 'minor' || inputs.increment == 'major') }}
+    with:
+      server_type: www

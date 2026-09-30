@@ -1,0 +1,190 @@
+.filters {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-24);
+}
+
+.row {
+  display: flex;
+  gap: var(--spacing-8);
+}
+
+.inputBox {
+  height: 48px;
+  padding: 0 var(--spacing-16);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-8);
+  border: 1px solid var(--semantic-line-normal-normal);
+  border-radius: var(--radius-12);
+  background: var(--semantic-background-normal-normal);
+  color: var(--semantic-label-assistive);
+}
+
+.inputBox:focus-within {
+  border-color: var(--semantic-primary-normal);
+  box-shadow: 0 0 0 1px var(--semantic-primary-normal);
+}
+
+.keyword {
+  flex: 1 1 320px;
+  min-width: 0;
+}
+
+.price {
+  flex: 0 1 280px;
+  min-width: 0;
+}
+
+.input {
+  flex-grow: 1;
+  min-width: 0;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  outline: none;
+  background: transparent;
+  color: var(--semantic-label-normal);
+}
+
+.input::placeholder {
+  color: var(--semantic-label-assistive);
+}
+
+.priceInput {
+  width: 0;
+  text-align: center;
+  appearance: textfield;
+}
+
+/* 숫자 입력의 위아래 화살표는 좁은 칸에서 숫자를 가려서 뺀다. */
+.priceInput::-webkit-inner-spin-button,
+.priceInput::-webkit-outer-spin-button {
+  margin: 0;
+  appearance: none;
+}
+
+.unit {
+  flex-shrink: 0;
+  color: var(--semantic-label-alternative);
+}
+
+.submit {
+  height: 48px;
+  padding: 0 var(--spacing-24);
+  flex-shrink: 0;
+  border: 0;
+  border-radius: var(--radius-12);
+  background: var(--semantic-label-normal);
+  color: var(--semantic-background-normal-normal);
+  cursor: pointer;
+}
+
+.submit:hover {
+  background: var(--semantic-inverse-background);
+}
+
+.categories {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-16);
+}
+
+/* 상위 카테고리는 밑줄 탭. 가로로 넘치면 옆으로 민다. */
+.tabs {
+  display: flex;
+  gap: var(--spacing-24);
+  overflow-x: auto;
+  scrollbar-width: none;
+  border-bottom: 1px solid var(--semantic-line-normal-alternative);
+}
+
+.tab,
+.tabOn {
+  padding: var(--spacing-12) 0;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-6);
+  flex-shrink: 0;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  background: transparent;
+  cursor: pointer;
+}
+
+.tab {
+  color: var(--semantic-label-alternative);
+}
+
+.tab:hover {
+  color: var(--semantic-label-normal);
+}
+
+/* 카드와 같은 카테고리 그림을 작게 쓴다. */
+.tabIcon {
+  flex-shrink: 0;
+  color: var(--tone-ink, currentColor);
+}
+
+.tabOn {
+  border-bottom-color: var(--semantic-label-strong);
+  color: var(--semantic-label-strong);
+}
+
+/* 하위 카테고리 칩은 줄바꿈하지 않고 한 줄로 두어, 넘치면 옆으로 민다. */
+.chips {
+  display: flex;
+  gap: var(--spacing-8);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.tabs::-webkit-scrollbar,
+.chips::-webkit-scrollbar {
+  display: none;
+}
+
+.chip,
+.chipOn {
+  flex-shrink: 0;
+  white-space: nowrap;
+  padding: var(--spacing-6) var(--spacing-14);
+  border: 1px solid var(--semantic-line-normal-normal);
+  border-radius: var(--radius-1000);
+  cursor: pointer;
+}
+
+.chip {
+  background: var(--semantic-background-normal-normal);
+  color: var(--semantic-label-neutral);
+}
+
+.chip:hover {
+  background: var(--semantic-fill-alternative);
+}
+
+.chipOn {
+  border-color: var(--semantic-label-normal);
+  background: var(--semantic-label-normal);
+  color: var(--semantic-background-normal-normal);
+}
+
+.error {
+  margin: 0;
+  color: var(--semantic-status-negative);
+}
+
+@media (max-width: 640px) {
+  .row {
+    flex-wrap: wrap;
+  }
+
+  .keyword {
+    flex-basis: 100%;
+  }
+
+  .price {
+    flex: 1 1 0;
+  }
+}

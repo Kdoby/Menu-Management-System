@@ -1,0 +1,45 @@
+/* 두 줄 테두리의 원형 도장. 살짝 비스듬히 찍힌다. */
+.stamp {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border: 2px solid var(--semantic-status-negative);
+  border-radius: var(--radius-50pct);
+  outline: 1px solid var(--semantic-status-negative);
+  outline-offset: 2px;
+  background: var(--semantic-background-transparent-alternative);
+  color: var(--semantic-status-negative);
+  transform: rotate(-12deg);
+  pointer-events: none;
+}
+
+.small {
+  width: 60px;
+  height: 60px;
+}
+
+.large {
+  width: 84px;
+  height: 84px;
+  border-width: 3px;
+  outline-width: 2px;
+  outline-offset: 3px;
+}
+
+.animate {
+  animation: press 0.32s cubic-bezier(0.2, 0.9, 0.3, 1.2);
+}
+
+@keyframes press {
+  from {
+    opacity: 0;
+    transform: rotate(-24deg) scale(1.6);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate {
+    animation: none;
+  }
+}

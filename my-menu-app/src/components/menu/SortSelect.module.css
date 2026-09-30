@@ -1,0 +1,32 @@
+.box {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.select {
+  appearance: none;
+  height: 36px;
+  padding: 0 var(--spacing-32) 0 var(--spacing-12);
+  border: 0;
+  border-radius: var(--radius-8);
+  background: transparent;
+  color: var(--semantic-label-normal);
+  cursor: pointer;
+}
+
+.select:hover {
+  background: var(--semantic-fill-alternative);
+}
+
+.select:focus-visible {
+  outline: 2px solid var(--semantic-primary-normal);
+  outline-offset: 2px;
+}
+
+.chevron {
+  position: absolute;
+  right: var(--spacing-10);
+  color: var(--semantic-label-alternative);
+  pointer-events: none;
+}

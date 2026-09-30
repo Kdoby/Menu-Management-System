@@ -1,0 +1,41 @@
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-4);
+}
+
+.arrow,
+.number,
+.current {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: var(--radius-8);
+  cursor: pointer;
+}
+
+.arrow,
+.number {
+  background: transparent;
+  color: var(--semantic-label-neutral);
+}
+
+.arrow:hover:not(:disabled),
+.number:hover {
+  background: var(--semantic-fill-alternative);
+}
+
+.arrow:disabled {
+  color: var(--semantic-label-disable);
+  cursor: default;
+}
+
+.current {
+  background: var(--semantic-label-normal);
+  color: var(--semantic-background-normal-normal);
+  cursor: default;
+}

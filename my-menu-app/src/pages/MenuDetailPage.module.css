@@ -1,0 +1,197 @@
+/* 폼과 맞춰 가운데에 둔다. 위치 표시도 카드 왼쪽 끝에 맞춰 함께 옮겨진다. */
+.page {
+  max-width: 720px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-24);
+}
+
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-8);
+  min-width: 0;
+  color: var(--semantic-label-assistive);
+}
+
+.crumbLink {
+  flex-shrink: 0;
+  color: var(--semantic-label-alternative);
+  border-radius: var(--radius-5);
+}
+
+.crumbLink:hover {
+  color: var(--semantic-label-normal);
+}
+
+.crumbCurrent {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--semantic-label-neutral);
+}
+
+.card {
+  position: relative;
+  padding: var(--spacing-40);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-32);
+  overflow: hidden;
+  border: var(--app-edge);
+  border-radius: var(--radius-20);
+  background: var(--semantic-background-normal-normal);
+}
+
+/* 카드 오른쪽 위에 크게 걸친 카테고리 그림. 색 띠 위, 글자와는 겹치지 않는 자리다. */
+.glyph {
+  position: absolute;
+  z-index: 1;
+  top: calc(var(--spacing-40) * -1);
+  right: calc(var(--spacing-32) * -1);
+  color: var(--tone-ink, var(--semantic-label-assistive));
+  transform: rotate(-8deg);
+  pointer-events: none;
+}
+
+/* 목록 카드처럼 윗부분만 갈래 색 띠로 칠한다. 카드 여백만큼 밖으로 넓혀 모서리까지 채운다. */
+.head {
+  position: relative;
+  margin: calc(var(--spacing-40) * -1) calc(var(--spacing-40) * -1) 0;
+  padding: var(--spacing-40) var(--spacing-40) var(--spacing-32);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+  background: var(--tone-tint, var(--semantic-fill-alternative));
+}
+
+.category {
+  color: var(--semantic-label-neutral);
+}
+
+.name {
+  margin: 0;
+  color: var(--semantic-label-strong);
+  overflow-wrap: anywhere;
+}
+
+.priceRow {
+  margin-top: var(--spacing-16);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-20);
+}
+
+.price {
+  color: var(--semantic-label-strong);
+}
+
+.priceOff {
+  color: var(--semantic-label-assistive);
+  text-decoration: line-through;
+  text-decoration-thickness: 3px;
+}
+
+.info {
+  position: relative;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--semantic-line-normal-neutral);
+  border-radius: var(--radius-12);
+  background: var(--semantic-background-normal-normal);
+}
+
+.row {
+  padding: var(--spacing-14) var(--spacing-20);
+  display: grid;
+  grid-template-columns: 120px minmax(0, 1fr);
+  gap: var(--spacing-16);
+}
+
+.row + .row {
+  border-top: 1px solid var(--semantic-line-normal-alternative);
+}
+
+.row dd {
+  margin: 0;
+  color: var(--semantic-label-normal);
+}
+
+.term {
+  color: var(--semantic-label-alternative);
+}
+
+.actions {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-8);
+}
+
+.spacer {
+  flex-grow: 1;
+}
+
+.edit {
+  padding-left: var(--spacing-32);
+  padding-right: var(--spacing-32);
+}
+
+/* 불러오는 동안의 머리 부분. */
+.boneShort {
+  width: 80px;
+  height: 20px;
+}
+
+.boneName {
+  width: 240px;
+  max-width: 100%;
+  height: 40px;
+  margin-top: var(--spacing-4);
+}
+
+.bonePrice {
+  width: 200px;
+  max-width: 100%;
+  height: 48px;
+  margin-top: var(--spacing-16);
+}
+
+@media (max-width: 640px) {
+  .card {
+    padding: var(--spacing-24) var(--spacing-20);
+    gap: var(--spacing-24);
+  }
+
+  .head {
+    margin: calc(var(--spacing-24) * -1) calc(var(--spacing-20) * -1) 0;
+    padding: var(--spacing-24) var(--spacing-20);
+  }
+
+  .glyph {
+    width: 136px;
+    height: 136px;
+    top: calc(var(--spacing-24) * -1);
+    right: calc(var(--spacing-24) * -1);
+  }
+
+  .row {
+    padding: var(--spacing-12) var(--spacing-16);
+    grid-template-columns: 88px minmax(0, 1fr);
+  }
+
+  /* 좁은 화면에서는 목록으로·복제를 위 한 줄, 품절·삭제·수정을 아래 한 줄에 나눠 둔다. */
+  .spacer {
+    flex-basis: 100%;
+    height: 0;
+  }
+
+  .secondary,
+  .soldOutToggle,
+  .delete,
+  .edit {
+    flex: 1 1 0;
+  }
+}

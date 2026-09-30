@@ -1,0 +1,32 @@
+.segment {
+  padding: var(--spacing-2);
+  display: inline-flex;
+  gap: var(--spacing-2);
+  border-radius: var(--radius-10);
+  background: var(--semantic-fill-normal);
+}
+
+.on,
+.off {
+  height: 32px;
+  padding: 0 var(--spacing-12);
+  border: 0;
+  border-radius: var(--radius-8);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.off {
+  background: transparent;
+  color: var(--semantic-label-alternative);
+}
+
+.off:hover {
+  color: var(--semantic-label-normal);
+}
+
+.on {
+  background: var(--semantic-background-normal-normal);
+  color: var(--semantic-label-strong);
+  box-shadow: var(--semantic-elevation-shadow-normal-xsmall);
+}

@@ -1,0 +1,254 @@
+/* 폼은 혼자 있는 화면이라 가운데에 둔다. */
+.page {
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+/* 크림 바탕 위의 흰 종이 한 장. 입력칸은 테두리로 가른다. */
+.card {
+  padding: var(--spacing-40);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-24);
+  border: var(--app-edge);
+  border-radius: var(--radius-20);
+  background: var(--semantic-background-normal-normal);
+}
+
+.head {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+  margin-bottom: var(--spacing-8);
+}
+
+.title {
+  margin: 0;
+  color: var(--semantic-label-strong);
+}
+
+.hint {
+  margin: 0;
+  color: var(--semantic-label-alternative);
+}
+
+.banner {
+  margin: 0;
+  padding: var(--spacing-12) var(--spacing-16);
+  border-radius: var(--radius-12);
+  background: var(--semantic-background-status-negative);
+  color: var(--semantic-status-negative);
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-8);
+}
+
+.label {
+  color: var(--semantic-label-neutral);
+}
+
+.control {
+  width: 100%;
+  height: 48px;
+  padding: 0 var(--spacing-16);
+  border: 1px solid var(--semantic-line-normal-normal);
+  border-radius: var(--radius-12);
+  background: var(--semantic-background-normal-normal);
+  color: var(--semantic-label-normal);
+  outline: none;
+}
+
+.control:focus,
+.control:focus-within {
+  border-color: var(--semantic-primary-normal);
+  box-shadow: 0 0 0 1px var(--semantic-primary-normal);
+}
+
+.control::placeholder,
+.bare::placeholder {
+  color: var(--semantic-label-assistive);
+}
+
+.invalid,
+.invalid:focus,
+.invalid:focus-within {
+  border-color: var(--semantic-status-negative);
+  box-shadow: 0 0 0 1px var(--semantic-status-negative);
+}
+
+.priceBox {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-8);
+}
+
+.bare {
+  flex-grow: 1;
+  min-width: 0;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  outline: none;
+  background: transparent;
+  color: var(--semantic-label-normal);
+  text-align: right;
+}
+
+.unit {
+  color: var(--semantic-label-alternative);
+}
+
+.error {
+  color: var(--semantic-status-negative);
+}
+
+/* 이름 중복 안내. 막는 오류가 아니라 알림이라 빨강 대신 주황을 아이콘과 바탕에만 쓴다. */
+.same {
+  padding: var(--spacing-12) var(--spacing-14);
+  display: flex;
+  gap: var(--spacing-10);
+  border-radius: var(--radius-12);
+  background: var(--semantic-background-status-cautionary);
+}
+
+.sameIcon {
+  flex-shrink: 0;
+  margin-top: var(--spacing-1);
+  color: var(--semantic-status-cautionary);
+}
+
+.sameBody {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+}
+
+.sameTitle {
+  margin: 0;
+  color: var(--semantic-label-strong);
+}
+
+.sameList {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2);
+}
+
+.sameList li {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-6);
+}
+
+.sameLink {
+  color: var(--semantic-label-normal);
+  text-decoration: underline;
+  text-decoration-color: var(--semantic-line-normal-normal);
+  text-underline-offset: 3px;
+  border-radius: var(--radius-3);
+}
+
+.sameLink:hover {
+  text-decoration-color: currentColor;
+}
+
+.sameMeta {
+  margin: 0;
+  color: var(--semantic-label-alternative);
+}
+
+.fieldset {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  min-width: 0;
+}
+
+.legend {
+  padding: 0;
+  margin-bottom: var(--spacing-8);
+}
+
+/* 판매 중·품절 두 칸짜리 선택. 실제 입력은 라디오라 키보드 화살표로도 바뀐다. */
+.segment {
+  padding: var(--spacing-4);
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--spacing-4);
+  border-radius: var(--radius-12);
+  background: var(--semantic-fill-normal);
+}
+
+.option,
+.optionOn {
+  position: relative;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-8);
+  cursor: pointer;
+}
+
+.option {
+  color: var(--semantic-label-alternative);
+}
+
+.option:hover {
+  color: var(--semantic-label-normal);
+}
+
+.optionOn {
+  background: var(--semantic-background-normal-normal);
+  color: var(--semantic-label-strong);
+  box-shadow: var(--semantic-elevation-shadow-normal-xsmall);
+}
+
+.segment input {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.option:has(input:focus-visible),
+.optionOn:has(input:focus-visible) {
+  outline: 2px solid var(--semantic-primary-normal);
+  outline-offset: 2px;
+}
+
+.actions {
+  margin-top: var(--spacing-8);
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--spacing-8);
+}
+
+/* 수정할 메뉴를 불러오는 동안의 칸. */
+.boneLabel {
+  width: 72px;
+  height: 20px;
+}
+
+.boneInput {
+  height: 48px;
+}
+
+@media (max-width: 640px) {
+  .card {
+    padding: var(--spacing-24) var(--spacing-20);
+  }
+
+  .cancel,
+  .submit {
+    flex: 1 1 0;
+  }
+}

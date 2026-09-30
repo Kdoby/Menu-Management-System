@@ -1,0 +1,20 @@
+/* 불러오는 동안 자리를 채우는 깜빡이는 막대.
+   JSX 에서 skeleton.bone 을 붙이고, 크기와 위치는 쓰는 쪽 CSS 에서 정한다. */
+.bone {
+  display: block;
+  border-radius: var(--radius-8);
+  background: var(--semantic-fill-normal);
+  animation: pulse 1.4s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  50% {
+    opacity: var(--opacity-43);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bone {
+    animation: none;
+  }
+}

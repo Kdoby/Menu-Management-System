@@ -1,0 +1,102 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-32);
+}
+
+.title {
+  margin: 0;
+  color: var(--semantic-label-strong);
+}
+
+.toolbar {
+  margin-bottom: calc(var(--spacing-16) * -1);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-16);
+}
+
+.tools {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-8);
+}
+
+.count {
+  margin: 0;
+  color: var(--semantic-label-alternative);
+}
+
+/* 크림 바탕 위에 흰 카드를 바로 놓는다. 따로 판을 깔지 않는다. */
+.plate {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 240px), 1fr));
+  gap: var(--spacing-16);
+}
+
+.item {
+  position: relative;
+  display: flex;
+}
+
+/* 카드 여백(8) + 8 만큼 들여 색 판 오른쪽 위에 놓는다.
+   평소엔 숨겨 두고, 카드에 마우스·키보드가 닿을 때만 보인다. 마우스가 없는 기기에선 늘 보인다. */
+.toggle {
+  position: absolute;
+  top: var(--spacing-16);
+  right: var(--spacing-16);
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+
+.item:hover .toggle,
+.item:focus-within .toggle {
+  opacity: 1;
+}
+
+@media (hover: none) {
+  .toggle {
+    opacity: 1;
+  }
+}
+
+.cardLink {
+  width: 100%;
+  display: block;
+  border-radius: var(--radius-16);
+}
+
+@media (max-width: 640px) {
+  .page {
+    gap: var(--spacing-24);
+  }
+
+  /* 좁은 화면에선 개수를 위 줄에 두고, 판매 상태와 정렬을 아래 줄 양끝에 둔다. */
+  .toolbar {
+    flex-wrap: wrap;
+    gap: var(--spacing-8);
+  }
+
+  .count {
+    flex-basis: 100%;
+  }
+
+  .tools {
+    flex-grow: 1;
+    justify-content: space-between;
+  }
+
+  .toggle {
+    top: var(--spacing-12);
+    right: var(--spacing-12);
+  }
+
+  .plate {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--spacing-8);
+  }
+}

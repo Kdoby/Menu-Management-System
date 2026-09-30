@@ -1,0 +1,118 @@
+/* 본문 폭은 1200px 에서 멈추고, 좁은 화면에서는 양옆 16px 만 남긴다. */
+.layout {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  border-bottom: 1px solid var(--semantic-line-normal-alternative);
+  background: var(--app-paper);
+}
+
+.bar,
+.main,
+.footer {
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding-left: var(--spacing-40);
+  padding-right: var(--spacing-40);
+}
+
+.bar {
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-16);
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-10);
+  color: var(--semantic-label-strong);
+  border-radius: var(--radius-8);
+}
+
+.logoMark {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-8);
+  background: var(--semantic-label-normal);
+  color: var(--semantic-background-normal-normal);
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-8);
+}
+
+.navLink,
+.active {
+  padding: var(--spacing-8) var(--spacing-12);
+  border-radius: var(--radius-8);
+}
+
+.navLink {
+  color: var(--semantic-label-alternative);
+}
+
+.navLink:hover {
+  color: var(--semantic-label-normal);
+}
+
+.active {
+  color: var(--semantic-label-strong);
+}
+
+.create {
+  padding: var(--spacing-8) var(--spacing-14);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-4);
+  border-radius: var(--radius-8);
+  background: var(--semantic-primary-normal);
+  color: var(--semantic-static-white);
+}
+
+.create:hover {
+  background: var(--semantic-primary-strong);
+}
+
+.main {
+  flex-grow: 1;
+  padding-top: var(--spacing-40);
+  padding-bottom: var(--spacing-64);
+}
+
+.footer {
+  padding-top: var(--spacing-24);
+  padding-bottom: var(--spacing-24);
+  border-top: 1px solid var(--semantic-line-normal-alternative);
+}
+
+.footerCopy {
+  color: var(--semantic-label-assistive);
+}
+
+@media (max-width: 640px) {
+  .bar,
+  .main,
+  .footer {
+    padding-left: var(--spacing-16);
+    padding-right: var(--spacing-16);
+  }
+
+  .main {
+    padding-top: var(--spacing-24);
+  }
+}

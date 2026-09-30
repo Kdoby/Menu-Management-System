@@ -1,0 +1,78 @@
+.dialog {
+  width: 400px;
+  max-width: calc(100vw - var(--spacing-32));
+  padding: var(--spacing-24);
+  border: 0;
+  border-radius: var(--radius-20);
+  background: var(--semantic-background-elevated-normal);
+  color: var(--semantic-label-normal);
+  box-shadow: var(--semantic-elevation-shadow-normal-xlarge);
+}
+
+.dialog[open] {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-24);
+}
+
+.dialog::backdrop {
+  background: var(--semantic-material-dimmer);
+}
+
+.text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-8);
+}
+
+.title {
+  margin: 0;
+  color: var(--semantic-label-strong);
+}
+
+.description {
+  margin: 0;
+  color: var(--semantic-label-neutral);
+}
+
+.error {
+  margin: 0;
+  padding: var(--spacing-12) var(--spacing-16);
+  border-radius: var(--radius-12);
+  background: var(--semantic-background-status-negative);
+  color: var(--semantic-status-negative);
+}
+
+.actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--spacing-8);
+}
+
+.cancel,
+.danger {
+  height: 48px;
+  border: 0;
+  border-radius: var(--radius-12);
+  cursor: pointer;
+}
+
+.cancel {
+  background: var(--semantic-fill-normal);
+  color: var(--semantic-label-normal);
+}
+
+.cancel:hover:not(:disabled) {
+  background: var(--semantic-fill-strong);
+}
+
+.danger {
+  background: var(--semantic-status-negative);
+  color: var(--semantic-static-white);
+}
+
+.cancel:disabled,
+.danger:disabled {
+  opacity: var(--opacity-52);
+  cursor: default;
+}
